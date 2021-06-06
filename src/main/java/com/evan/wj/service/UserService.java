@@ -4,6 +4,7 @@ import com.evan.wj.dao.UserDAO;
 import com.evan.wj.dto.UserDTO;
 import com.evan.wj.pojo.AdminRole;
 import com.evan.wj.pojo.User;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,8 +88,9 @@ public class UserService {
         adminUserRoleService.saveRoleChanges(userInDB.getId(), user.getRoles());
     }
 
-    public void deleteById(User user) {
-        User userInDB = userDAO.findByUsername(user.getUsername());
-        userDAO.deleteById(userInDB.getId());
+    public void deleteById(int id) {
+        userDAO.deleteById(id);
     }
+
+
 }

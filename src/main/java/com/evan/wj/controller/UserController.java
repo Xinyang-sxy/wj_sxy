@@ -39,9 +39,9 @@ public class UserController {
         return ResultFactory.buildSuccessResult("修改用户信息成功");
     }
 
-    @PutMapping("/api/admin/user/deleteUser")
-    public Result deleteUser(@RequestBody @Valid User requestUser){
-        userService.deleteById(requestUser);
+    @DeleteMapping("/api/admin/user/{id}")
+    public Result deleteUser(@PathVariable("id") int id){
+        userService.deleteById(id);
         System.out.println("删除用户");
         return ResultFactory.buildSuccessResult("删除用户成功");
     }

@@ -16,10 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
 
-/**
- * @author Evan
- * @date 2019/11
- */
+
 
 public class URLPathMatchingFilter extends PathMatchingFilter {
     @Autowired
@@ -66,10 +63,10 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
             }
 
             if (hasPermission) {
-                //System.out.println("用户：" + username + "访问了：" + requestAPI + "接口");
+                System.out.println("用户：" + username + "访问了：" + requestAPI + "接口");
                 return true;
             } else {
-                //System.out.println( "用户：" + username + "访问了没有权限的接口：" + requestAPI);
+                System.out.println( "用户：" + username + "访问了没有权限的接口：" + requestAPI);
                 return false;
             }
         }

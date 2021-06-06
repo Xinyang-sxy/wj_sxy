@@ -39,7 +39,6 @@ public class MenuController {
     @GetMapping("/api/admin/role/menu")
     @ResponseBody
     public Result listAllMenus() {
-        System.out.println("根据id查询角色信息");
         return ResultFactory.buildSuccessResult(adminMenuService.getMenusByRoleId(1));
     }
 

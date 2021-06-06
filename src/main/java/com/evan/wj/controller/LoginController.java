@@ -40,7 +40,7 @@ public class LoginController {
         Subject subject = SecurityUtils.getSubject();
 //        subject.getSession().setTimeout(10000);
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(username, requestUser.getPassword());
-        usernamePasswordToken.setRememberMe(true);
+        //usernamePasswordToken.setRememberMe(true);
         try {
             subject.login(usernamePasswordToken);
             User user = userService.findByUsername(username);

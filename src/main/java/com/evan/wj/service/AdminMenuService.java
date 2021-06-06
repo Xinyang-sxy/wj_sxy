@@ -2,11 +2,14 @@ package com.evan.wj.service;
 
 
 import com.evan.wj.dao.AdminMenuDAO;
+import com.evan.wj.dao.UserDAO;
 import com.evan.wj.pojo.AdminMenu;
 import com.evan.wj.pojo.AdminRoleMenu;
 import com.evan.wj.pojo.AdminUserRole;
 import com.evan.wj.pojo.User;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.crypto.SecureRandomNumberGenerator;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,8 @@ public class AdminMenuService {
     AdminUserRoleService adminUserRoleService;
     @Autowired
     AdminRoleMenuService adminRoleMenuService;
+    @Autowired
+    UserDAO userDAO;
 
     public List<AdminMenu> getAllByParentId(int parentId) {
         return adminMenuDAO.findAllByParentId(parentId);
@@ -70,4 +75,36 @@ public class AdminMenuService {
 
         menus.removeIf(m -> m.getParentId() != 0);
     }
+
+    public String findName(){
+        String username = SecurityUtils.getSubject().getPrincipal().toString();
+        User user = userService.findByUsername(username);
+        return user.getName();
+    }
+
+    public User changePassword(String password){
+        String username = SecurityUtils.getSubject().getPrincipal().toString();
+        User userInDB = userService.findByUsername(username);
+        String salt = new SecureRandomNumberGenerator().nextBytes().toString();
+        int times = 2;
+        userInDB.setSalt(salt);
+        String encodedPassword = new SimpleHash("md5", password, salt, times).toString();
+        userInDB.setPassword(encodedPassword);
+        return userDAO.save(userInDB);
+    }
+    public User personalInfo(){
+        String username = SecurityUtils.getSubject().getPrincipal().toString();
+        User user = userService.findByUsername(username);
+        return user;
+    }
+    public void editUser(User user) {
+        String username = SecurityUtils.getSubject().getPrincipal().toString();
+        User userInDB = userService.findByUsername(username);
+        //User userInDB = userDAO.findByUsername(user.getUsername());
+        userInDB.setName(user.getName());
+        userInDB.setPhone(user.getPhone());
+        userInDB.setEmail(user.getEmail());
+        userDAO.save(userInDB);
+    }
+
 }
